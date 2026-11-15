@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Projeto acadêmico de sistema de monitoramento hidrológico com API REST e dados simulados.">
     <title>Monitoramento Hidrológico | Projeto Integrador</title>
+    <link rel="icon" type="image/png"
+      href="{% static 'monitoring/favicon.png' %}">
     <style>
         :root {
             color-scheme: light;
@@ -38,7 +40,9 @@
         .button-outline { color: white; border: 1px solid #ffffff88; }
         .hero-art { min-height: 260px; display: grid; place-items: center; }
         .water-card { width: min(100%, 300px); padding: 26px; border: 1px solid #ffffff45; border-radius: 24px; background: #ffffff16; box-shadow: 0 24px 70px #062d3b44; transform: rotate(3deg); }
-        .water-icon { font-size: 4.4rem; line-height: 1.2; }
+        .water-icon { display: flex; align-items: center; justify-content: center; min-height: 88px; line-height: 1.2; }
+        .water-icon img { display: block; width: 105px; height: 105px; object-fit: contain; }
+        .feature-icon img { display: block; width: 48px; height: 48px; object-fit: contain; }
         .water-card strong { display: block; margin-top: 14px; font-size: 1.1rem; }
         .water-card span { color: #d9edf0; font-size: .88rem; }
         section { padding: 76px 0; }
@@ -112,7 +116,7 @@
                 </div>
             </div>
             <div class="hero-art" aria-hidden="true"><div class="water-card">
-                <div class="water-icon">🌊</div><strong>Monitoramento hidrológico</strong>
+                <div class="water-icon"><img src="{% static 'monitoring/emoji-wave.svg' %}" alt="" aria-hidden="true" width="1000px"></div><strong>Monitoramento hidrológico</strong>
                 <span>Estações · Séries históricas · Dados simulados</span>
             </div></div>
         </div>
@@ -125,9 +129,9 @@
                 <p>O desafio proposto pela COGMO foi adaptado para Python + Django. A aplicação representa estações hidrológicas fictícias e disponibiliza observações sintéticas, permitindo exercitar modelagem de dados, persistência, desenvolvimento de serviços REST e documentação de API.</p>
             </div>
             <div class="feature-grid">
-                <article class="feature"><div class="feature-icon" aria-hidden="true">📍</div><h3>Estações</h3><p>Cadastro lógico de estações com identificação, nome, rio e município.</p></article>
-                <article class="feature"><div class="feature-icon" aria-hidden="true">📈</div><h3>Séries históricas</h3><p>Consulta de observações de nível da água (m) e intensidade de chuva (mm/h), com janela de tempo configurável.</p></article>
-                <article class="feature"><div class="feature-icon" aria-hidden="true">🧪</div><h3>Dados sintéticos</h3><p>Dados gerados para demonstração e testes, sem representar medições de rios reais.</p></article>
+                <article class="feature"><div class="feature-icon" aria-hidden="true"><img src="{% static 'monitoring/emoji-location.svg' %}" alt=""></div><h3>Estações</h3><p>Cadastro lógico de estações com identificação, nome, rio e município.</p></article>
+                <article class="feature"><div class="feature-icon" aria-hidden="true"><img src="{% static 'monitoring/emoji-chart.svg' %}" alt=""></div><h3>Séries históricas</h3><p>Consulta de observações de nível da água (m) e intensidade de chuva (mm/h), com janela de tempo configurável.</p></article>
+                <article class="feature"><div class="feature-icon" aria-hidden="true"><img src="{% static 'monitoring/emoji-lab.svg' %}" alt=""></div><h3>Dados sintéticos</h3><p>Dados gerados para demonstração e testes, sem representar medições de rios reais.</p></article>
             </div>
         </div>
     </section>
@@ -201,6 +205,6 @@
         </div>
     </section>
 </main>
-<footer><div class="container"><span>Monitoramento Hidrológico · Projeto Integrador</span><span>Aplicação acadêmica · Dados simulados · Python + Django</span></div></footer>
+<footer><div class="container"><span>Monitoramento Hidrológico · Projeto Integrador</span><span>Aplicação acadêmica · Dados simulados · Python + Django</span><span>Ilustrações: <a href="https://github.com/jdecked/twemoji" target="_blank" rel="noopener noreferrer">Twemoji</a> · CC BY 4.0</span></div></footer>
 </body>
 </html>
