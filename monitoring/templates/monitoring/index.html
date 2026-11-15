@@ -79,6 +79,38 @@
         .role-status { display: inline-block; margin-top: 10px; color: #8b641b; font-size: .78rem; font-weight: 800; }
         footer { padding: 28px 0; color: #c8dce2; background: #092f40; font-size: .86rem; }
         footer .container { display: flex; justify-content: space-between; gap: 18px; flex-wrap: wrap; }
+        
+        .repository-section {
+            padding: 42px 0;
+            background: #eaf2f5;
+        }
+        .repository-card {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 26px 30px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: white;
+        }
+        .repository-card h2 {
+            margin: 5px 0 8px;
+            font-size: clamp(1.35rem, 2.5vw, 1.8rem);
+        }
+        .repository-card p {
+            margin: 0;
+            color: var(--muted);
+        }
+        .repository-link {
+            flex-shrink: 0;
+            color: white;
+            background: var(--blue);
+        }
+        .repository-link:hover {
+            background: var(--blue-dark);
+        }
+
         @media (max-width: 760px) {
             .nav { align-items: flex-start; flex-direction: column; padding: 16px 0; }
             .nav-links { gap: 12px 18px; }
@@ -87,6 +119,10 @@
             .hero-art { min-height: 180px; }
             section { padding: 56px 0; }
             .feature-grid, .team-grid, .institution-grid { grid-template-columns: 1fr; }
+            .repository-card {
+                align-items: flex-start;
+                flex-direction: column;
+            }
         }
     </style>
 </head>
@@ -134,6 +170,33 @@
                 <article class="feature"><div class="feature-icon" aria-hidden="true"><img src="{% static 'monitoring/emoji-lab.svg' %}" alt=""></div><h3>Dados sintéticos</h3><p>Dados gerados para demonstração e testes, sem representar medições de rios reais.</p></article>
             </div>
         </div>
+    </section>
+
+    <section class="repository-section" id="repositorio">
+        <div class="container">
+            <div class="repository-card">
+                <div>
+                    <span class="kicker">Código-fonte</span>
+
+                    <h2>Acesse o repositório do projeto</h2>
+
+                    <p>
+                        Consulte o código-fonte, acompanhe as alterações
+                        e conheça a evolução do desenvolvimento.
+                    </p>
+                </div>
+
+                <a
+                    class="button repository-link"
+                    href="https://github.com/vitorhngo/monitoramento-hidrologico"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Ver repositório no GitHub
+                </a>
+            </div>
+        </div>
+    </section>
     </section>
     <section class="api-section" id="api">
         <div class="container">
