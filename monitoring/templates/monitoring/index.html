@@ -91,10 +91,15 @@
                 <div>
                     <h3>O que pode ser consultado?</h3><p class="muted">Os recursos abaixo são disponibilizados pela API sob o prefixo <code>/api/</code>.</p>
                     <div class="endpoint-list">
-                        <div class="endpoint"><span class="method">GET</span><code>/api/stations</code><br><span class="muted">Lista as estações disponíveis.</span></div>
-                        <div class="endpoint"><span class="method">GET</span><code>/api/stations/{id}</code><br><span class="muted">Retorna os dados de uma estação.</span></div>
-                        <div class="endpoint"><span class="method">GET</span><code>/api/stations/{id}/summary</code><br><span class="muted">Apresenta as leituras mais recentes de nível e chuva.</span></div>
-                        <div class="endpoint"><span class="method">GET</span><code>/api/stations/{id}/series?metric=level&amp;hours=24</code><br><span class="muted">Consulta a série histórica por métrica e período (1 a 72 horas).</span></div>
+                        <div class="endpoint"><span class="method method-get">GET</span><code>/api/stations</code><br><span class="muted">Lista as estações disponíveis.</span></div>
+                        <div class="endpoint"><span class="method method-post">POST</span><code>/api/stations</code><br><span class="muted">Cria uma nova estação.</span></div>
+                        <div class="endpoint"><span class="method method-get">GET</span><code>/api/stations/{id}</code><br><span class="muted">Retorna os dados de uma estação.</span></div>
+                        <div class="endpoint"><span class="method method-put">PUT</span><code>/api/stations/{id}</code><br><span class="muted">Substitui os dados de uma estação.</span></div>
+                        <div class="endpoint"><span class="method method-patch">PATCH</span><code>/api/stations/{id}</code><br><span class="muted">Atualiza parcialmente os dados de uma estação.</span></div>
+                        <div class="endpoint"><span class="method method-delete">DELETE</span><code>/api/stations/{id}</code><br><span class="muted">Exclui uma estação.</span></div>
+                        <div class="endpoint"><span class="method method-get">GET</span><code>/api/stations/{id}/series?metric=level&amp;hours=24</code><br><span class="muted">Consulta a série histórica por métrica e período (1 a 72 horas).</span></div>
+                        <div class="endpoint"><span class="method method-get">GET</span><code>/api/stations/{id}/summary</code><br><span class="muted">Apresenta as leituras mais recentes de nível e chuva.</span></div>
+                        <div class="endpoint"><span class="method method-post">POST</span><code>/api/token/</code><br><span class="muted">Autentica o usuário e retorna um token de acesso.</span></div>
                     </div>
                 </div>
                 <div>

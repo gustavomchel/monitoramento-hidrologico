@@ -333,25 +333,79 @@ h3 {
     align-items: start;
 }
 
+.endpoint {
+    padding: 16px 18px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: white;
+}
+
 .endpoint-list {
     display: grid;
     gap: 12px;
 }
 
-.endpoint {
-    padding: 16px 18px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: white;
+/* GET - Azul */
+.endpoint:has(.method-get) {
+    border-color: #61affe;
+    background: #ebf3fb;
 }
 
+/* POST - Verde */
+.endpoint:has(.method-post) {
+    border-color: #49cc90;
+    background: #e8f6ef;
+}
+
+/* PUT - Laranja */
+.endpoint:has(.method-put) {
+    border-color: #fca130;
+    background: #fff3e4;
+}
+
+/* PATCH - Turquesa */
+.endpoint:has(.method-patch) {
+    border-color: #50e3c2;
+    background: #e7f8f4;
+}
+
+/* DELETE - Vermelho */
+.endpoint:has(.method-delete) {
+    border-color: #f93e3e;
+    background: #fdeaea;
+}
+
+/* Identificação visual do método */
 .method {
     display: inline-block;
-    min-width: 48px;
+    min-width: 64px;
     margin-right: 8px;
-    color: #08734e;
+    padding: 3px 8px;
+    border-radius: 3px;
+    color: white;
+    text-align: center;
     font-size: .76rem;
     font-weight: 850;
+}
+
+.method-get {
+    background: #61affe;
+}
+
+.method-post {
+    background: #49cc90;
+}
+
+.method-put {
+    background: #fca130;
+}
+
+.method-patch {
+    background: #50e3c2;
+}
+
+.method-delete {
+    background: #f93e3e;
 }
 
 code {
