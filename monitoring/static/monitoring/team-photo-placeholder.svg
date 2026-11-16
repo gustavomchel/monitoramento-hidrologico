@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Espaço reservado para foto">
+  <rect width="240" height="240" fill="#eaf2f5"/>
+  <circle cx="120" cy="88" r="43" fill="#9bb8c3"/>
+  <path d="M38 226c7-49 39-76 82-76s75 27 82 76" fill="#9bb8c3"/>
+  <circle cx="120" cy="120" r="110" fill="none" stroke="#c7dce3" stroke-width="4"/>
+</svg>

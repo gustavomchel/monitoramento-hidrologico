@@ -1,3 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def index(request):
+    """Renderiza a página institucional e de entrada do sistema."""
+    return render(request, "monitoring/index.html")
