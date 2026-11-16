@@ -24,10 +24,9 @@ MAX_HOURS = 72
 class StationViewSet(viewsets.ModelViewSet):
     queryset = Station.objects.all().order_by('id') # queryset base, ordenado por id
     serializer_class = StationSerializer # serializer usado para (de)serializar Station
-    http_method_names = ['get', 'head']
 
-    # GET /api/stations/{id}/series?metric=level&hours=24
-    # Histórico de nível ('level') ou chuva ('rain') de uma estação.
+    # Personaliza a documentação do endpoint no padrão OpenAPI,definindo descrição, parâmetros aceitos e possíveis respostas HTTP.
+    # Essas informações são exibidas no Swagger e no ReDoc.
     @extend_schema(
         summary="Histórico de nível ou chuva de uma estação",
         description=(
@@ -57,6 +56,9 @@ class StationViewSet(viewsets.ModelViewSet):
             404: OpenApiResponse(description="Estação não encontrada."),
         },
     )
+
+    # GET /api/stations/{id}/series?metric=level&hours=24 
+    # GET /api/stations/{id}/series?metric=rain&hours=24
     @action(detail=True, methods=['get'], url_path='series')
     def series(self, request, pk=None):
         """
@@ -90,12 +92,11 @@ class StationViewSet(viewsets.ModelViewSet):
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-        # Consulta via ORM (parametrizada), ordenada por horário; só devolve o que existe (sem inventar lacunas)
-        since = timezone.now() - timedelta(hours=hours)
+        since = timezone.now() - timedelta(hours=hours) # Define o horário de início da busca
         observations = (
-            station.observations
-            .filter(metric=metric, observed_at__gte=since)
-            .order_by('observed_at')
+            station.observations # Acessa apenas as observações vinculadas a esta estação específica
+            .filter(metric=metric, observed_at__gte=since) # Filtra pela métrica desejada e pega apenas registros feitos a partir da data de corte (maior ou igual)
+            .order_by('observed_at') # Ordena os resultados do mais antigo para o mais recente (ordem cronológica)
         )
 
         return Response({
@@ -105,20 +106,23 @@ class StationViewSet(viewsets.ModelViewSet):
             'hours': hours,
             'simulated': True, # dados fictícios (exigência do desafio)
             'source': Observation.Source.SYNTHETIC,
-            'points': ObservationPointSerializer(observations, many=True).data,
+            'points': ObservationPointSerializer(observations, many=True).data, 
         })
 
+    # GET /api/stations/{id}/summary
     @action(detail=True, methods=["get"], url_path="summary")
     def summary(self, request, pk=None):
-        station = self.get_object()
-        latest_readings = {}
+        station = self.get_object() # Identifica a estação pelo ID informado na URL e retorna HTTP 404 caso a estação não exista.
+        latest_readings = {} # Armazena a última leitura encontrada de cada métrica.
 
         for metric in (Observation.Metric.LEVEL, Observation.Metric.RAIN):
             observation = (
-                Observation.objects.filter(station=station, metric=metric)
-                .order_by("-observed_at", "-id")
-                .first()
+                Observation.objects.filter(station=station, metric=metric) # Filtra as observações pela estação e pela métrica.
+                .order_by("-observed_at", "-id") # Ordena da mais recente para a mais antiga.
+                .first() # Recupera somente o primeiro registro.
             )
+
+            # Se existir uma observação, armazena seus dados.Caso contrário, retorna None para indicar ausência de leitura.
             latest_readings[metric] = (
                 {
                     "value": observation.value,
