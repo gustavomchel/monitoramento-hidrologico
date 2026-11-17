@@ -25,7 +25,7 @@ Windows:
 
 ```powershell
 python -m venv venv
-venv\Scripts\activate
+.\venv\Scripts\activate
 ```
 
 Linux:
@@ -37,9 +37,17 @@ source venv/bin/activate
 
 ### 1.3. Instalar as dependências
 
+Antes de executar comandos ou rodar o projeto, certifique-se de que o Python do ambiente virtual (venv) esteja ativo.
+
+1. Pressione Ctrl + Shift + P para abrir a paleta de comandos.
+2. Digite e selecione Python: Select Interpreter.
+3. Escolha a opção que contém o caminho da pasta da sua venv (ex: .\venv\Scripts\python.exe).
+
 ```bash
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
+
+> **Aviso:** O início `python -m pip` garante que o pip seja vinculado exatamente ao Python da sua venv atual, evitando instalações acidentais no sistema global e conflitos futuros de sistema. 
 
 ## 2. Preparar o banco de dados
 
@@ -50,11 +58,11 @@ python manage.py migrate
 ### 2.1. Gerar e importar os dados
 
 ```bash
-python seed.py
-python import_csv.py
+python scripts/seed.py
+python manage.py import_csv
 ```
 
-O `seed.py` gera os dados sintéticos em CSV, enquanto o `import_csv.py` importa os registros para o banco SQLite.
+O `seed.py` gera os dados sintéticos em CSV, enquanto o `import_csv` importa os registros para o banco SQLite.
 
 ## 3. Executar a aplicação
 
