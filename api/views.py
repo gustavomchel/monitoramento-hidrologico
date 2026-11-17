@@ -10,6 +10,10 @@ from .serializers import StationSerializer, ObservationPointSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import StationFilter
 
+from django.shortcuts import redirect  # Redireciona o navegador para outra rota.
+from django.urls import reverse  # Obtém a URL a partir do nome de uma rota.
+from rest_framework.renderers import BrowsableAPIRenderer  # Identifica requisições feitas pela interface HTML do DRF.
+
 # Unidade de cada métrica (a mesma regra da constraint chk_obs_metric_unit_match do model)
 UNIT_BY_METRIC = {
     Observation.Metric.LEVEL: Observation.Unit.METERS,
@@ -62,6 +66,34 @@ class StationViewSet(viewsets.ModelViewSet):
         },
     )
 
+
+    # Personaliza a resposta filtro id
+    def list(self, request, *args, **kwargs):
+
+        station_id = request.query_params.get('id')
+
+        is_browsable = isinstance(
+            request.accepted_renderer,
+            BrowsableAPIRenderer
+        )
+
+        if station_id and is_browsable:
+
+            station = self.get_queryset().filter(
+                pk=station_id
+            ).first()
+
+            if station:
+                url = reverse(
+                    'station-detail',
+                    kwargs={'pk': station.pk}
+                )
+
+                return redirect(url)
+
+        return super().list(request, *args, **kwargs)
+
+    
     # GET /api/stations/{id}/series?metric=level&hours=24 
     # GET /api/stations/{id}/series?metric=rain&hours=24
     @action(detail=True, methods=['get'], url_path='series')
