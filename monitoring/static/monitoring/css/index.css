@@ -424,12 +424,7 @@ code {
     font-size: .9rem;
 }
 
-.swagger-button {
-    color: white;
-    background: var(--blue);
-}
-
-.redoc-button {
+.commom-button {
     border: 1px solid var(--line);
     background: white;
 }
