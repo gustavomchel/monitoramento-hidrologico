@@ -49,6 +49,16 @@ python -m pip install -r requirements.txt
 
 > **Aviso:** O início `python -m pip` garante que o pip seja vinculado exatamente ao Python da sua venv atual, evitando instalações acidentais no sistema global e conflitos futuros de sistema. 
 
+### 1.4. Criar variáveis de ambiente
+1. Copie o arquivo `.env.example`, colocando-o na raiz do projeto.
+2. Renomeie-o para `.env`
+3. No terminal, rode o comando abaixo:
+
+```bash
+python -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+4. Copie o código que aparece. No arquivo `.env`, substitua *replace-with-your-own-secret-key* pelo código copiado.
+
 ## 2. Preparar o banco de dados
 
 ```bash
