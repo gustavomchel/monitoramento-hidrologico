@@ -7,6 +7,8 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from monitoring.models import Station, Observation # modelos do app monitoring
 from .serializers import StationSerializer, ObservationPointSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from .filters import StationFilter
 
 # Unidade de cada métrica (a mesma regra da constraint chk_obs_metric_unit_match do model)
 UNIT_BY_METRIC = {
@@ -24,6 +26,9 @@ MAX_HOURS = 72
 class StationViewSet(viewsets.ModelViewSet):
     queryset = Station.objects.all().order_by('id') # queryset base, ordenado por id
     serializer_class = StationSerializer # serializer usado para (de)serializar Station
+
+    filter_backends = [DjangoFilterBackend]  # habilita filtragem via django-filter
+    filterset_class = StationFilter
 
     # Personaliza a documentação do endpoint no padrão OpenAPI,definindo descrição, parâmetros aceitos e possíveis respostas HTTP.
     # Essas informações são exibidas no Swagger e no ReDoc.
