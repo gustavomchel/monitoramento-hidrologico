@@ -9,6 +9,8 @@ from monitoring.models import Station, Observation # modelos do app monitoring
 from .serializers import StationSerializer, ObservationPointSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from .filters import StationFilter
+from rest_framework.renderers import JSONRenderer
+from .renderers import SeriesBrowsableRenderer
 
 from django.shortcuts import redirect  # Redireciona o navegador para outra rota.
 from django.urls import reverse  # Obtém a URL a partir do nome de uma rota.
@@ -33,6 +35,15 @@ class StationViewSet(viewsets.ModelViewSet):
 
     filter_backends = [DjangoFilterBackend]  # habilita filtragem via django-filter
     filterset_class = StationFilter
+
+    # Na tela do DRF, o link "Series" do menu "Ações Extras" passa a vir com metric e hours preenchidos,
+    # em vez de abrir a URL sem parâmetros (que retornaria erro 400).
+    def get_extra_action_url_map(self):
+        urls = super().get_extra_action_url_map()
+        for name, url in list(urls.items()):
+            if name.lower() == 'series':
+                urls[name] = f'{url}?metric=level&hours={DEFAULT_HOURS}'
+        return urls
 
     # Personaliza a documentação do endpoint no padrão OpenAPI,definindo descrição, parâmetros aceitos e possíveis respostas HTTP.
     # Essas informações são exibidas no Swagger e no ReDoc.
@@ -96,7 +107,12 @@ class StationViewSet(viewsets.ModelViewSet):
     
     # GET /api/stations/{id}/series?metric=level&hours=24 
     # GET /api/stations/{id}/series?metric=rain&hours=24
-    @action(detail=True, methods=['get'], url_path='series')
+    @action(
+        detail=True,
+        methods=['get'],
+        url_path='series',
+        renderer_classes=[JSONRenderer, SeriesBrowsableRenderer],  # JSON normal + tela do DRF com formulário
+    )
     def series(self, request, pk=None):
         """
         Histórico de nível ou chuva de uma estação (dados simulados).
