@@ -45,6 +45,36 @@ class StationViewSet(viewsets.ModelViewSet):
                 urls[name] = f'{url}?metric=level&hours={DEFAULT_HOURS}'
         return urls
 
+
+    # Personaliza a resposta filtro id
+    def list(self, request, *args, **kwargs):
+
+        station_id = request.query_params.get('id')
+
+        is_browsable = isinstance(
+            request.accepted_renderer,
+            BrowsableAPIRenderer
+        )
+
+        if station_id and is_browsable:
+
+            station = self.get_queryset().filter(
+                pk=station_id
+            ).first()
+
+            if station:
+                url = reverse(
+                    'station-detail',
+                    kwargs={'pk': station.pk}
+                )
+
+                return redirect(url)
+
+        return super().list(request, *args, **kwargs)
+
+    
+    # GET /api/stations/{id}/series?metric=level&hours=24 
+    # GET /api/stations/{id}/series?metric=rain&hours=24
     # Personaliza a documentação do endpoint no padrão OpenAPI,definindo descrição, parâmetros aceitos e possíveis respostas HTTP.
     # Essas informações são exibidas no Swagger e no ReDoc.
     @extend_schema(
@@ -76,37 +106,6 @@ class StationViewSet(viewsets.ModelViewSet):
             404: OpenApiResponse(description="Estação não encontrada."),
         },
     )
-
-
-    # Personaliza a resposta filtro id
-    def list(self, request, *args, **kwargs):
-
-        station_id = request.query_params.get('id')
-
-        is_browsable = isinstance(
-            request.accepted_renderer,
-            BrowsableAPIRenderer
-        )
-
-        if station_id and is_browsable:
-
-            station = self.get_queryset().filter(
-                pk=station_id
-            ).first()
-
-            if station:
-                url = reverse(
-                    'station-detail',
-                    kwargs={'pk': station.pk}
-                )
-
-                return redirect(url)
-
-        return super().list(request, *args, **kwargs)
-
-    
-    # GET /api/stations/{id}/series?metric=level&hours=24 
-    # GET /api/stations/{id}/series?metric=rain&hours=24
     @action(
         detail=True,
         methods=['get'],
