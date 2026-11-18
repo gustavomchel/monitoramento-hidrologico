@@ -83,3 +83,100 @@ python manage.py runserver
 A aplicação ficará disponível em:
 
 `http://127.0.0.1:8000/`
+
+## 4. Documentação da API (Swagger e Redoc)
+
+Com o servidor em execução (`python manage.py runserver`), a documentação interativa fica disponível em:
+
+| Interface | URL |
+|---|---|
+| Swagger UI | `http://127.0.0.1:8000/api/docs/` |
+| Redoc | `http://127.0.0.1:8000/api/redoc/` |
+| Schema OpenAPI | `http://127.0.0.1:8000/api/schema/` |
+
+No Swagger é possível testar os endpoints diretamente pelo botão **Try it out**.
+
+## 5. Endpoints
+
+Endereço base: `http://127.0.0.1:8000/api`
+
+> **Atenção:** as rotas não usam barra no final (use `/api/stations`, e não `/api/stations/`).
+
+| Método | Rota | Descrição | Autenticação |
+|---|---|---|---|
+| GET | `/api/stations` | Lista as estações. Aceita os filtros `id`, `name`, `river` e `municipality`. | Não |
+| GET | `/api/stations/{id}` | Detalhe de uma estação. | Não |
+| GET | `/api/stations/{id}/summary` | Última leitura de nível e de chuva da estação. | Não |
+| GET | `/api/stations/{id}/series?metric=level&hours=24` | Histórico de nível (em metros). | Não |
+| GET | `/api/stations/{id}/series?metric=rain&hours=24` | Histórico de chuva (em mm/h). | Não |
+| POST | `/api/token/` | Gera o token de autenticação (envia `username` e `password`). | Não |
+| POST, PUT, PATCH, DELETE | `/api/stations` e `/api/stations/{id}` | Criar, alterar e excluir estações. | Sim (token) |
+
+Parâmetros do histórico (`series`):
+
+- `metric` (obrigatório): `level` (nível, em m) ou `rain` (chuva, em mm/h).
+- `hours` (opcional): janela de tempo em horas, de 1 a 72. Padrão: 24.
+
+Exemplos de chamadas:
+
+```bash
+curl http://127.0.0.1:8000/api/stations
+curl http://127.0.0.1:8000/api/stations?river=verde
+curl http://127.0.0.1:8000/api/stations/EST-01/summary
+curl "http://127.0.0.1:8000/api/stations/EST-01/series?metric=level&hours=24"
+```
+
+Respostas de erro:
+
+- `400`: `metric` ou `hours` inválidos.
+- `401`: tentativa de criar, alterar ou excluir sem token.
+- `404`: estação não encontrada.
+
+> **Aviso:** todos os dados são sintéticos e não descrevem rios reais.
+
+## 6. Executar os testes
+
+Com o ambiente virtual ativo, na raiz do projeto:
+
+```bash
+python manage.py test
+```
+
+O resultado esperado termina com `OK`.
+
+## 7. Criar superusuário e obter token
+
+### 7.1. Criar o superusuário
+
+```bash
+python manage.py createsuperuser
+```
+
+Informe o nome de usuário, o e-mail (opcional) e a senha quando solicitado. Depois, com o servidor em execução, o painel administrativo fica em `http://127.0.0.1:8000/admin/`.
+
+### 7.2. Obter o token de autenticação
+
+Com o servidor em execução, envie o usuário e a senha para `/api/token/`:
+
+```bash
+curl -X POST http://127.0.0.1:8000/api/token/ -d "username=seu_usuario" -d "password=sua_senha"
+```
+
+> No PowerShell do Windows, use `curl.exe` no lugar de `curl`.
+
+A resposta traz o token:
+
+```json
+{"token": "seu_token_aqui"}
+```
+
+### 7.3. Usar o token
+
+- **Em requisições:** envie o cabeçalho `Authorization: Token seu_token_aqui`.
+- **No Swagger:** clique em **Authorize**, preencha o campo `tokenAuth` com `Token seu_token_aqui` e confirme.
+
+Exemplo de requisição autenticada:
+
+```bash
+curl -X DELETE http://127.0.0.1:8000/api/stations/EST-99 -H "Authorization: Token seu_token_aqui"
+```
