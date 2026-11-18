@@ -9,11 +9,12 @@ from monitoring.models import Observation, Station
 class StationSummaryTests(APITestCase):
     def setUp(self):
         self.station = Station.objects.create(
+            id="EST-T1",
             name="Estação Teste",
             river="Rio Teste",
             municipality="Município Teste",
         )
-        self.url = f"/api/stations/{self.station.pk}/summary/"
+        self.url = f"/api/stations/{self.station.pk}/summary"
 
     def create_observation(self, metric, value, unit, observed_at):
         return Observation.objects.create(
@@ -67,5 +68,5 @@ class StationSummaryTests(APITestCase):
         self.assertIsNone(response.data["latest_readings"]["rain"])
 
     def test_summary_returns_404_for_unknown_station(self):
-        response = self.client.get("/api/stations/999999/summary/")
+        response = self.client.get("/api/stations/999999/summary")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
