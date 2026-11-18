@@ -9,7 +9,7 @@ API REST desenvolvida com Django e Django REST Framework para consultar dados si
 
 ### Pré-requisitos
 
-- Python instalado.
+- Python(3.14.6) instalado.
 - Git instalado.
 
 ### 1.1. Clonar o repositório
