@@ -47,6 +47,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'monitoring',
+    'api',
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -134,4 +139,28 @@ MAILERS = {
     'default': {
         'BACKEND': 'django.core.mail.backends.console.EmailBackend',
     },
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',  # GET liberado, os demais exigem login
+    ],
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'API de Monitoramento Hidrológico',
+    'DESCRIPTION': (
+        'API de demonstração com estações e observações **simuladas**. '
+        'Os dados não descrevem rios reais.'
+    ),
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'SIDECAR',
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
 }
