@@ -18,3 +18,4 @@ tzdata==2026.6
 uritemplate==4.2.0
 gunicorn
 whitenoise
+psycopg[binary]
