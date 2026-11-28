@@ -19,3 +19,4 @@ uritemplate==4.2.0
 gunicorn
 whitenoise
 psycopg[binary]
+drf-redesign==0.6.0
